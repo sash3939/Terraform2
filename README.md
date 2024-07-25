@@ -271,8 +271,23 @@ test = [
   },
 ]
 ```
+
+## Создал переменную test в файле variables.tf:
+
+variable "test" {
+type = list(map(list(string)))
+}
+
+Значение самой переменной в файле terraform.tfvars. Применил "terraform plan", ничего не поменялось.
+
 2. Напишите выражение в terraform console, которое позволит вычленить строку "ssh -o 'StrictHostKeyChecking=no' ubuntu@62.84.124.117" из этой переменной.
-------
+
+> var.test[0].dev1[0]
+"ssh -o 'StrictHostKeyChecking=no' ubuntu@62.84.124.117"
+> var.test[1].dev2[0]
+"ssh -o 'StrictHostKeyChecking=no' ubuntu@84.252.140.88"
+
+
 
 ------
 
@@ -285,6 +300,22 @@ test = [
 
 **Важно. Удалите все созданные ресурсы**.
 
+1. Зашел в ВМ через ssh, поменял пароль командой "sudo passwd ubuntu".
+   
+![passwd change](https://github.com/user-attachments/assets/145b0f3c-754b-4702-a360-a6c8a49c4996)
+---
+
+2. Убрал внешний ip, перевев nat в значение false
+3. Подключился к serial console, попинговал ya.ru, не пингуется.
+
+![ubuntu web login serial console](https://github.com/user-attachments/assets/68d43c6e-972a-427f-8f1c-15a97f3d1362)
+---
+
+![gateway](https://github.com/user-attachments/assets/e2cc8d6a-5993-4d15-b8a3-2c6a1c8408b1)
+---
+
+![subnets gateway](https://github.com/user-attachments/assets/eba55d43-722e-4960-bbbb-45a70bcf91d6)
+---
 
 ### Критерии оценки
 
