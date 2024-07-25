@@ -128,6 +128,9 @@ resources {
 2. Скопируйте блок ресурса и создайте с его помощью вторую ВМ в файле main.tf: **"netology-develop-platform-db"** ,  ```cores  = 2, memory = 2, core_fraction = 20```. Объявите её переменные с префиксом **vm_db_** в том же файле ('vms_platform.tf').  ВМ должна работать в зоне "ru-central1-b"
 3. Примените изменения.
 
+![resource vm_db](https://github.com/user-attachments/assets/1609dc74-96a2-47b9-aaf7-4880f4b6e467)
+---
+
 
 ### Задание 4
 
@@ -136,12 +139,25 @@ resources {
 
 В качестве решения приложите вывод значений ip-адресов команды ```terraform output```.
 
+![outputs](https://github.com/user-attachments/assets/1de4387d-5429-4b91-ace6-c0e13214e398)
+---
 
 ### Задание 5
 
 1. В файле locals.tf опишите в **одном** local-блоке имя каждой ВМ, используйте интерполяцию ${..} с НЕСКОЛЬКИМИ переменными по примеру из лекции.
+
+![locals](https://github.com/user-attachments/assets/f5799f2f-2dbe-4dda-a6c8-18a2034649bd)
+---
+
 2. Замените переменные внутри ресурса ВМ на созданные вами local-переменные.
+
+![changes after locals](https://github.com/user-attachments/assets/d2ee4202-3639-464b-ad98-e2b1b6f06966)
+---
+  
 3. Примените изменения.
+
+![ycloud after locals](https://github.com/user-attachments/assets/0bf70515-ffcc-4197-92ac-d0763edf4939)
+---
 
 
 ### Задание 6
@@ -168,7 +184,12 @@ resources {
      }
    }
    ```
-3. Создайте и используйте отдельную map(object) переменную для блока metadata, она должна быть общая для всех ваших ВМ.
+
+![terraform plan after map variables](https://github.com/user-attachments/assets/d456a33b-da91-443b-804a-5b6c77f298de)
+---
+
+
+2. Создайте и используйте отдельную map(object) переменную для блока metadata, она должна быть общая для всех ваших ВМ.
    ```
    пример из terraform.tfvars:
    metadata = {
@@ -176,9 +197,17 @@ resources {
      ssh-keys           = "ubuntu:ssh-ed25519 AAAAC..."
    }
    ```  
-  
-5. Найдите и закоментируйте все, более не используемые переменные проекта.
-6. Проверьте terraform plan. Изменений быть не должно.
+![terraform tfvars](https://github.com/user-attachments/assets/caf86a59-eec4-4901-a85f-c53d7523e538)
+---
+## Теперь ключ подставляется из terraform.tfvars
+
+3. Найдите и закоментируйте все, более не используемые переменные проекта.
+
+![variables tf after map variables](https://github.com/user-attachments/assets/8fc02c59-4b99-43c7-bc46-6d84c8cdfe28)
+---
+
+4. Проверьте terraform plan. Изменений быть не должно.
+Изменений нет.
 
 ------
 
@@ -194,9 +223,23 @@ resources {
 Изучите содержимое файла console.tf. Откройте terraform console, выполните следующие задания: 
 
 1. Напишите, какой командой можно отобразить **второй** элемент списка test_list.
+
+local.test_list[1]
+"staging"
+
 2. Найдите длину списка test_list с помощью функции length(<имя переменной>).
+
+length(local.test_list)
+3
+   
 3. Напишите, какой командой можно отобразить значение ключа admin из map test_map.
+
+local.test_map["admin"]
+"John"
+
 4. Напишите interpolation-выражение, результатом которого будет: "John is admin for production server based on OS ubuntu-20-04 with X vcpu, Y ram and Z virtual disks", используйте данные из переменных test_list, test_map, servers и функцию length() для подстановки значений.
+
+"${ local.test_map["admin"] } is keys(local.test_map)[0] for ${ local.test_list[2] } server based on OS ${ local.servers["production"]["image"] } with ${ local.servers["production"]["cpu"] } vcpu, ${ local.servers["production"]["ram"] } ram and ${ length(local.servers["production"]["disks"]) } virtual disks"
 
 **Примечание**: если не догадаетесь как вычленить слово "admin", погуглите: "terraform get keys of map"
 
